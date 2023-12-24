@@ -25,6 +25,7 @@ const addWaypoint = ({
 
             res.json({
                 status: 500,
+                timestamp: timestamp,
                 message: `Error adding waypoint: Tracker ID ${trackerId} does not exist!`
             })
             return //Abort operation if action is blocked
@@ -43,6 +44,7 @@ const addWaypoint = ({
             newWaypoint.save()
             res.json({
                 status: 200,
+                timestamp: timestamp,
                 message: `Waypoint added successfully!`
             })
         }
