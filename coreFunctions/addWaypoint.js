@@ -1,4 +1,3 @@
-const collectionExists = require('../helpers/collectionExists');
 const documentExists = require('../helpers/documentExists');
 const createWaypointModel = require('../models/waypoint')
 
@@ -32,7 +31,6 @@ const addWaypoint = ({
         } else { //Continue operation if action is not blocked
             const Waypoint = createWaypointModel(trackerId)
             const newWaypoint = Waypoint({
-                trackerId: trackerId,
                 timestamp: timestamp,
                 latitude: latitude,
                 longitude: longitude,

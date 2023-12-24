@@ -2,10 +2,6 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const waypointSchema = new Schema({
-    trackerId: {
-        type: String,
-        required: true
-    },
     timestamp: {
         type: Number,
         required: true
