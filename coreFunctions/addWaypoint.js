@@ -1,5 +1,7 @@
 const documentExists = require('../helpers/documentExists');
-const createWaypointModel = require('../models/waypoint')
+const LiveLocation = require('../models/livelocation');
+const createWaypointModel = require('../models/waypoint');
+const updateLiveLocation = require('./updateLiveLocation');
 
 const addWaypoint = ({
     trackerId,
@@ -68,6 +70,22 @@ const addWaypoint = ({
                 })
 
                 newWaypoint.save()
+                updateLiveLocation(
+                    { trackerId: trackerId }, //Filter criteria
+                    {
+                        $set: { //New values
+                            trackerId: trackerId,
+                            timestamp: timestamp,
+                            latitude: latitude,
+                            longitude: longitude,
+                            heading: heading,
+                            speed: speed,
+                            altitude: altitude,
+                            accuracy: accuracy
+                        },
+                    }
+                )
+
                 res.json({
                     status: 200,
                     timestamp: timestamp,
