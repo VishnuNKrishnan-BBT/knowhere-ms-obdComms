@@ -58,6 +58,17 @@ const addWaypoint = ({
                     message: `Ignoring request due to undefined fields.`
                 })
             } else {
+
+                //Ignore if speed is close to stationary
+                if (speed < 3) {
+                    res.json({
+                        status: 200,
+                        timestamp: timestamp,
+                        message: `Waypoint ignored as movement is negligible.`
+                    })
+                    return
+                }
+
                 const Waypoint = createWaypointModel(trackerId)
                 const newWaypoint = Waypoint({
                     timestamp: timestamp,
