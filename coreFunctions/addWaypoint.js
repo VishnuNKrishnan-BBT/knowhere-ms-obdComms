@@ -59,15 +59,15 @@ const addWaypoint = ({
                 })
             } else {
 
-                //Ignore if speed is close to stationary - ==========UNCOMMENT AFTER TESTING========
-                // if (speed < 3) {
-                //     res.json({
-                //         status: 200,
-                //         timestamp: timestamp,
-                //         message: `Waypoint ignored as movement is negligible.`
-                //     })
-                //     return
-                // }
+                // Ignore if speed is close to stationary
+                if (speed < 3) {
+                    res.json({
+                        status: 200,
+                        timestamp: timestamp,
+                        message: `Waypoint ignored as movement is negligible.`
+                    })
+                    return
+                }
 
                 const Waypoint = createWaypointModel(trackerId)
                 const newWaypoint = Waypoint({

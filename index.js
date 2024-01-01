@@ -16,6 +16,8 @@ const bodyParser = require('body-parser');
 const addWaypoint = require('./coreFunctions/addWaypoint');
 const collectionExists = require('./helpers/collectionExists');
 const documentExists = require('./helpers/documentExists');
+const { resolveLocation } = require('./helpers/resolveLocation');
+const { addResolvedLocation } = require('./coreFunctions/addResolvedLocation');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -52,6 +54,12 @@ app.post('/', (req, res) => {
 app.post('/addWaypoint', (req, res) => {
     addWaypoint({ ...req.body, res })
 })
+
+// resolveLocation(25.333720, 55.392164).then(res => {
+//     console.log(JSON.stringify(res.results[0].components, null, 4));
+// })
+
+// addResolvedLocation('ABC123', 892828772, 25.333720, 55.392164) - This is ready to use. Just replace the hardcorded values
 
 //Start app
 app.listen(port, () => {
