@@ -2,6 +2,7 @@ const documentExists = require('../helpers/documentExists');
 const LiveLocation = require('../models/livelocation');
 const createWaypointModel = require('../models/waypoint');
 const updateLiveLocation = require('./updateLiveLocation');
+const getLastWaypoint = require('./getLastWaypoint');
 
 const addWaypoint = ({
     trackerId,
@@ -36,7 +37,7 @@ const addWaypoint = ({
             actionBlocked = true
             console.log(`Error adding waypoint: Tracker ID ${trackerId} does not exist!`)
 
-            res.json({
+            res.status(500).json({
                 status: 500,
                 timestamp: timestamp,
                 message: `Error adding waypoint: Tracker ID ${trackerId} does not exist!`
@@ -52,57 +53,66 @@ const addWaypoint = ({
                 heading === undefined ||
                 speed === undefined
             ) {
-                res.json({
+                res.status(500).json({
                     status: 500,
                     timestamp: timestamp,
                     message: `Ignoring request due to undefined fields.`
                 })
             } else {
 
-                // Ignore if speed is close to stationary
-                // if (speed < 3) {
-                //     res.json({
-                //         status: 200,
-                //         timestamp: timestamp,
-                //         message: `Waypoint ignored as movement is negligible.`
-                //     })
-                //     return
-                // }
-
-                const Waypoint = createWaypointModel(trackerId)
-                const newWaypoint = Waypoint({
-                    timestamp: timestamp,
-                    latitude: latitude,
-                    longitude: longitude,
-                    heading: heading,
-                    speed: speed,
-                    altitude: altitude,
-                    accuracy: accuracy,
-                    resolved: false
-                })
-
-                newWaypoint.save()
-                updateLiveLocation(
-                    { trackerId: trackerId }, //Filter criteria
-                    {
-                        $set: { //New values
-                            trackerId: trackerId,
-                            timestamp: timestamp,
-                            latitude: latitude,
-                            longitude: longitude,
-                            heading: heading,
-                            speed: speed,
-                            altitude: altitude,
-                            accuracy: accuracy
-                        },
+                // Ignore if last speed == 0 or close to stationary
+                getLastWaypoint(trackerId).then(result => {
+                    if (result.status == 'success') {
+                        console.log(`--${result.data.speed < 2 && speed < 2}----${result.data.speed}------${speed}-----`);
+                        if (result.data.speed < 2 && speed < 2) {
+                            res.json({
+                                status: 200,
+                                timestamp: timestamp,
+                                message: `Waypoint ignored as movement is negligible.`
+                            })
+                            return
+                        } else {
+                            add()
+                        }
                     }
-                )
-
-                res.json({
-                    status: 200,
-                    timestamp: timestamp,
-                    message: `Waypoint added successfully!`
                 })
+
+                const add = () => {
+                    const Waypoint = createWaypointModel(trackerId)
+                    const newWaypoint = Waypoint({
+                        timestamp: timestamp,
+                        latitude: latitude,
+                        longitude: longitude,
+                        heading: heading,
+                        speed: speed,
+                        altitude: altitude,
+                        accuracy: accuracy,
+                        resolved: false
+                    })
+
+                    newWaypoint.save()
+                    updateLiveLocation(
+                        { trackerId: trackerId }, //Filter criteria
+                        {
+                            $set: { //New values
+                                trackerId: trackerId,
+                                timestamp: timestamp,
+                                latitude: latitude,
+                                longitude: longitude,
+                                heading: heading,
+                                speed: speed,
+                                altitude: altitude,
+                                accuracy: accuracy
+                            },
+                        }
+                    )
+
+                    res.status(200).json({
+                        status: 200,
+                        timestamp: timestamp,
+                        message: `Waypoint added successfully!`
+                    })
+                }
             }
         }
     })

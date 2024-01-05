@@ -55,12 +55,6 @@ app.post('/addWaypoint', (req, res) => {
     addWaypoint({ ...req.body, res })
 })
 
-// resolveLocation(25.333720, 55.392164).then(res => {
-//     console.log(JSON.stringify(res.results[0].components, null, 4));
-// })
-
-// addResolvedLocation('ABC123', 892828772, 25.333720, 55.392164) - This is ready to use. Just replace the hardcorded values
-
 //Start app
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
