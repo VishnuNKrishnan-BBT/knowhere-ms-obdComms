@@ -73,6 +73,8 @@ const addWaypoint = ({
                         } else {
                             add()
                         }
+                    } else if (result.status == 'fail') {
+                        add() //If fetching last waypoint failed for some reason, add the lastwaypoint anyway. This is the case when a new tracker sends waypoints - there won't be any waypoints in the table, and getLastWaypoint will fail.
                     }
                 })
 
