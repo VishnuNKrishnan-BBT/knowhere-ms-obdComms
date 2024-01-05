@@ -63,8 +63,7 @@ const addWaypoint = ({
                 // Ignore if last speed == 0 or close to stationary
                 getLastWaypoint(trackerId).then(result => {
                     if (result.status == 'success') {
-                        console.log(`--${result.data.speed < 2 && speed < 2}----${result.data.speed}------${speed}-----`);
-                        if (result.data.speed < 2 && speed < 2) {
+                        if (result.data.speed < 0.277778 && speed < 0.277778) { // 0.277778m/s = 1km/h
                             res.json({
                                 status: 200,
                                 timestamp: timestamp,
