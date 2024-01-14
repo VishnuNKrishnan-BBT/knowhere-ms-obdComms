@@ -58,6 +58,7 @@ const addWaypoint = ({
                     timestamp: timestamp,
                     message: `Ignoring request due to undefined fields.`
                 })
+                return
             } else {
 
                 // Ignore if last speed == 0 or close to stationary
