@@ -13,6 +13,7 @@ const addWaypoint = ({
     speed,
     altitude = null,
     accuracy = null,
+    newLeg = false,
     res
 }) => {
 
@@ -26,7 +27,8 @@ const addWaypoint = ({
         heading,
         speed,
         altitude,
-        accuracy
+        accuracy,
+        newLeg
     );
 
     var actionBlocked = false
