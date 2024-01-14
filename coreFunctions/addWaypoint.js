@@ -46,12 +46,12 @@ const addWaypoint = ({
         } else { //Continue operation if action is not blocked
 
             if (
-                trackerId === undefined ||
-                timestamp === undefined ||
-                latitude === undefined ||
-                longitude === undefined ||
-                heading === undefined ||
-                speed === undefined
+                !trackerId ||
+                !timestamp ||
+                !latitude ||
+                !longitude ||
+                !heading ||
+                !speed
             ) {
                 res.status(500).json({
                     status: 500,
