@@ -6,6 +6,10 @@ const waypointSchema = new Schema({
         type: Number,
         required: true
     },
+    newLeg: {
+        type: Boolean,
+        required: false
+    },
     latitude: {
         type: Number,
         required: true
