@@ -30,6 +30,10 @@ const waypointSchema = new Schema({
         type: Number,
         required: false
     },
+    resolved: {
+        type: Boolean,
+        required: true
+    }
 }, { timestamps: true })
 
 

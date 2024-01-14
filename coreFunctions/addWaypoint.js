@@ -46,19 +46,18 @@ const addWaypoint = ({
         } else { //Continue operation if action is not blocked
 
             if (
-                !trackerId ||
-                !timestamp ||
-                !latitude ||
-                !longitude ||
-                !heading ||
-                !speed
+                trackerId === undefined ||
+                timestamp === undefined ||
+                latitude === undefined ||
+                longitude === undefined ||
+                heading === undefined ||
+                speed === undefined
             ) {
                 res.status(500).json({
                     status: 500,
                     timestamp: timestamp,
                     message: `Ignoring request due to undefined fields.`
                 })
-                return
             } else {
 
                 // Ignore if last speed == 0 or close to stationary
