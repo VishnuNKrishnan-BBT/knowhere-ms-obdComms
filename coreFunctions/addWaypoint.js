@@ -90,7 +90,8 @@ const addWaypoint = ({
                         speed: speed,
                         altitude: altitude,
                         accuracy: accuracy,
-                        resolved: false
+                        resolved: false,
+                        newLeg: newLeg
                     })
 
                     newWaypoint.save()
