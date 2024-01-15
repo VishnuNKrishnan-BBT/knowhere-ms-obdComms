@@ -1,7 +1,9 @@
 const documentExists = require('../helpers/documentExists');
 const LiveLocation = require('../models/livelocation');
+const createResolvedLocationModel = require('../models/resolvedLocation')
 const createWaypointModel = require('../models/waypoint');
 const updateLiveLocation = require('./updateLiveLocation');
+const checkLocationResolutionDue = require('./checkLocationResolutionDue')
 const getLastWaypoint = require('./getLastWaypoint');
 const { addResolvedLocation } = require('./addResolvedLocation');
 
@@ -31,8 +33,6 @@ const addWaypoint = ({
         accuracy,
         newLeg
     );
-
-    var actionBlocked = false
 
     //Block if trackerId does not exist in trackers collection
     documentExists('trackers', { trackerId: trackerId }).then(result => {
@@ -96,6 +96,8 @@ const addWaypoint = ({
                     })
 
                     newWaypoint.save()
+
+                    //Update on live location table
                     updateLiveLocation(
                         { trackerId: trackerId }, //Filter criteria
                         {
@@ -112,12 +114,19 @@ const addWaypoint = ({
                         }
                     )
 
-                    addResolvedLocation(trackerId, timestamp, latitude, longitude)
-
-                    res.status(200).json({
-                        status: 200,
-                        timestamp: timestamp,
-                        message: `Waypoint added successfully!`
+                    //Resolve location if required
+                    let resolverMessage
+                    checkLocationResolutionDue(trackerId).then(result => {
+                        console.log('resolverMessage', result.message)
+                        if (result?.data?.due) {
+                            addResolvedLocation(trackerId, timestamp, latitude, longitude, newLeg)
+                        }
+                    }).finally(() => {
+                        res.status(200).json({
+                            status: 200,
+                            timestamp: timestamp,
+                            message: `Waypoint added successfully! ${resolverMessage}`
+                        })
                     })
                 }
             }

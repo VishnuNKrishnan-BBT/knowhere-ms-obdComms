@@ -52,7 +52,15 @@ const addResolvedLocation = (
         })
 
         newResolvedLocation.save()
-    }).then(() => {
+    }).then(async () => {
+
+        //Update waypoint resolved key to true
+        const Waypoint = createWaypointModel(trackerId)
+        const result = await Waypoint.updateOne(
+            { timestamp: timestamp },
+            { $set: { resolved: true } }
+        )
+
         return {
             status: 'success',
             message: 'Location resolved.',

@@ -29,6 +29,10 @@ const resolveLocationSchema = new Schema({
     serviceResult: {
         type: Object,
         required: true
+    },
+    newLeg: {
+        type: Boolean,
+        required: true
     }
 }, { timestamps: true })
 
