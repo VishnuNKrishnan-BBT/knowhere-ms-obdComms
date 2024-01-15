@@ -1,4 +1,3 @@
-const createResolvedLocationModel = require('../models/resolvedLocation')
 const axios = require('axios')
 
 const resolveLocation = async (lat, lon) => {

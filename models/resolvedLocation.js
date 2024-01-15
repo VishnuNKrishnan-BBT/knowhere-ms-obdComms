@@ -22,6 +22,10 @@ const resolveLocationSchema = new Schema({
         type: String,
         required: true
     },
+    uuid: {
+        type: String,
+        required: true
+    },
     serviceResult: {
         type: Object,
         required: true

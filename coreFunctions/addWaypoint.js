@@ -3,6 +3,7 @@ const LiveLocation = require('../models/livelocation');
 const createWaypointModel = require('../models/waypoint');
 const updateLiveLocation = require('./updateLiveLocation');
 const getLastWaypoint = require('./getLastWaypoint');
+const { addResolvedLocation } = require('./addResolvedLocation');
 
 const addWaypoint = ({
     trackerId,
@@ -110,6 +111,8 @@ const addWaypoint = ({
                             },
                         }
                     )
+
+                    addResolvedLocation(trackerId, timestamp, latitude, longitude)
 
                     res.status(200).json({
                         status: 200,

@@ -34,6 +34,10 @@ const liveLocationSchema = new Schema({
         type: Number,
         required: false
     },
+    resolvedLocation: {
+        type: Object,
+        required: false
+    }
 }, { timestamps: true })
 
 const LiveLocation = mongoose.model('LiveLocation', liveLocationSchema)
