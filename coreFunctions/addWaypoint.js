@@ -1,6 +1,5 @@
 const documentExists = require('../helpers/documentExists');
 const LiveLocation = require('../models/livelocation');
-const createResolvedLocationModel = require('../models/resolvedLocation')
 const createWaypointModel = require('../models/waypoint');
 const updateLiveLocation = require('./updateLiveLocation');
 const checkLocationResolutionDue = require('./checkLocationResolutionDue')
@@ -118,7 +117,7 @@ const addWaypoint = ({
                     let resolverMessage
                     checkLocationResolutionDue(trackerId).then(result => {
                         console.log('resolverMessage', result.message)
-                        if (result?.data?.due) {
+                        if (newLeg || result?.data?.due) { //Resolution should happen if 1) this is the first wapoint of a new leg OR 2) resolutionDue == true
                             addResolvedLocation(trackerId, timestamp, latitude, longitude, newLeg)
                         }
                     }).finally(() => {
