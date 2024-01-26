@@ -55,6 +55,25 @@ app.post('/addWaypoint', (req, res) => {
     addWaypoint({ ...req.body, res })
 })
 
+app.post('/addWaypoints', (req, res) => {
+    console.log('Add Waypoints')
+    console.table(req.body)
+
+    var returnData = []
+
+    req.body.map(obj => {
+        returnData.push(obj.timestamp)
+    })
+
+    res.json(returnData)
+
+    return {
+        status: 'success',
+        message: null,
+        data: returnData
+    }
+})
+
 //Start app
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
