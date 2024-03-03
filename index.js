@@ -52,7 +52,7 @@ app.post('/', (req, res) => {
 })
 
 app.post('/addWaypoint', (req, res) => {
-    addWaypoint({ ...req.body, res })
+    addWaypoint({ ...req.body.trackerId, ...req.body.waypoints, res })
 })
 
 app.post('/addWaypoints', (req, res) => {
