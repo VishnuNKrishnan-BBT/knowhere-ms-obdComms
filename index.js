@@ -57,7 +57,7 @@ app.post('/addWaypoint', (req, res) => {
 
 app.post('/addWaypoints', (req, res) => {
     console.log('Add Waypoints')
-    console.table(req.body)
+    console.log(req.body)
 
     var returnData = req.body.waypoints
 
