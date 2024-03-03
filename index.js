@@ -59,12 +59,12 @@ app.post('/addWaypoints', (req, res) => {
     console.log('Add Waypoints')
     console.log(req.body)
 
-    var returnData = req.body.waypoints
+    var returnData = []
 
-    // req.body.map(obj => {
-    //     returnData.push(obj.timestamp)
-    //     addWaypoint(obj)
-    // })
+    req.body.map(obj => {
+        returnData.push(obj.timestamp)
+        // addWaypoint(obj)
+    })
 
     res.json(returnData)
 
