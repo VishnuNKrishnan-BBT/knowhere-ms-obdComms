@@ -52,19 +52,19 @@ app.post('/', (req, res) => {
 })
 
 app.post('/addWaypoint', (req, res) => {
-    addWaypoint({ ...req.body.trackerId, ...req.body.waypoints, res })
+    addWaypoint({ ...req.body.waypoints, res })
 })
 
 app.post('/addWaypoints', (req, res) => {
     console.log('Add Waypoints')
     console.table(req.body)
 
-    var returnData = []
+    var returnData = req.body.waypoints
 
-    req.body.map(obj => {
-        returnData.push(obj.timestamp)
-        addWaypoint(obj)
-    })
+    // req.body.map(obj => {
+    //     returnData.push(obj.timestamp)
+    //     addWaypoint(obj)
+    // })
 
     res.json(returnData)
 
