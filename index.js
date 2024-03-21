@@ -1,7 +1,7 @@
 //MODULE IMPORTS
 const express = require('express')
 const cors = require('cors')
-require('dotenv').config();
+require('dotenv').config()
 const { connectToDB } = require('./connectToDB')
 
 //CORE FUNTIONS IMPORT
@@ -18,6 +18,7 @@ const collectionExists = require('./helpers/collectionExists');
 const documentExists = require('./helpers/documentExists');
 const { resolveLocation } = require('./helpers/resolveLocation');
 const { addResolvedLocation } = require('./coreFunctions/addResolvedLocation');
+const styledLog = require('./helpers/styledLog')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -56,8 +57,14 @@ app.post('/addWaypoint', (req, res) => {
 })
 
 app.post('/addWaypoints', (req, res) => {
-    console.log('Add Waypoints')
-    console.log(req.body)
+    styledLog({ colour: 'yellow', style: 'bold' }, '=== Incoming request on /addWaypoints ===')
+
+    styledLog({ colour: 'yellow', style: 'normal' }, `> Assigned TXN ID\t: TXN0920102 [1/3]`)
+    styledLog({ colour: 'white', style: 'normal' }, `> Tracker ID\t\t: ${req.body[0]?.trackerId || 'Not available in payload'}`)
+    styledLog({ colour: 'white', style: 'normal', blankLine: 0 }, `> Number of objects\t: ${req.body.length}`)
+
+    styledLog({ colour: 'yellow', style: 'bold' }, '> TXN0920102 [2/3] - /addWaypoints - Waypoints ingestion in progress...')
+    styledLog({ colour: 'green', style: 'bold', blankLine: 0 }, '> TXN0920102 [2/3] - /addWaypoints - ✔ Waypoints successfully ingested...')
 
     var returnData = {
         processedTimestamps: []
@@ -67,6 +74,8 @@ app.post('/addWaypoints', (req, res) => {
         returnData.processedTimestamps.push(obj.timestamp)
         // addWaypoint(obj)
     })
+
+    styledLog({ colour: 'white', style: 'normal', blankLine: 0 }, `> TXN0920102 [3/3] - /addWaypoints - Processed Timestamps: ${JSON.stringify(returnData.processedTimestamps)}`)
 
     res.json(returnData)
 
@@ -79,5 +88,5 @@ app.post('/addWaypoints', (req, res) => {
 
 //Start app
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
+    styledLog({ colour: 'green', style: 'bold' }, `✓ KW-MS-OBDCOMMS - Server initialized on port ${port}`)
 })
